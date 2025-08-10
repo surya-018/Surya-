@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Interactive Navbar with Test Form</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap" rel="stylesheet" />
+<style>
+  * { box-sizing: border-box; }
+  body {
+    font-family: 'Poppins', Arial, sans-serif;
+    margin: 0;
+    background: #121212;
+    color: #eee;
+  }
+  .navbar {
+    background: #292929;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    height: 50px;
+    position: relative;
+    box-shadow: 0 3px 8px rgba(255, 87, 34, 0.5);
+    user-select: none;
+    flex-wrap: wrap;
+  }
+  .navbar a, .navbar .login-btn {
+    color: #eee;
+    padding: 0 15px;
+    text-decoration: none;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 16px;
+    letter-spacing: 0.07em;
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 50px;
+    transition: color 0.3s ease;
+    white-space: nowrap;
+  }
+  .navbar a::after, .navbar .login-btn::after {
+    content: "";
+    position: absolute;
+    bottom: 10px;
+    left: 15px;
+    width: 0;
+    height: 2px;
+    background: #ff5722;
+    border-radius: 2px;
+    transition: width 0.3s ease;
+  }
+  .navbar a:hover::after, .navbar .login-btn:hover::after,
+  .navbar a.active::after {
+    width: calc(100% - 30px);
+  }
+  .navbar a:hover, .navbar .login-btn:hover { color: #ff5722; }
+  .navbar a.active { color: #ff5722; }
+  .login-dropdown {
+    position: absolute;
+    top: 50px;
+    background: #2a2a2a;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(255, 87, 34, 0.6);
+    display: none;
+    flex-direction: column;
+    min-width: 180px;
+    z-index: 100;
+    overflow: hidden;
+    animation: slideDown 0.3s ease forwards;
+  }
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .login-dropdown button {
+    background: transparent;
+    border: none;
+    color: #eee;
+    padding: 12px 20px;
+    text-align: left;
+    width: 100%;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 15px;
+    transition: background 0.25s ease, transform 0.2s ease;
+  }
+  .login-dropdown button:hover {
+    background: #ff5722;
+    color: #121212;
+    transform: scale(1.05);
+  }
+  .login-dropdown.show { display: flex; }
+  #testForm, #resultForm {
+    max-width: 700px;
+    margin: 40px auto;
+    background: #222;
+    padding: 40px 45px;
+    border-radius: 14px;
+    box-shadow: 0 0 25px rgba(255, 87, 34, 0.5);
+    display: none;
+    color: #eee;
+  }
+  #testForm h2, #resultForm h2 {
+    text-align: center;
+    font-weight: 800;
+    color: #ff5722;
+    letter-spacing: 0.1em;
+  }
+  label {
+    display: block;
+    margin: 18px 0 10px 0;
+    font-weight: 600;
+    font-size: 17px;
+  }
+  input[type="text"], select {
+    width: 100%;
+    padding: 14px 16px;
+    border-radius: 8px;
+    border: 2px solid #444;
+    background: #1f1f1f;
+    font-size: 17px;
+    color: #eee;
+    transition: border-color 0.3s ease;
+  }
+  input[type="text"]:focus, select:focus {
+    outline: none;
+    border-color: #ff5722;
+    box-shadow: 0 0 10px #ff5722aa;
+  }
+  .question { margin-top: 32px; }
+  .question p {
+    font-weight: 700;
+    color: #ff5722;
+    font-size: 18px;
+  }
+  .options label {
+    display: block;
+    margin: 10px 0;
+    cursor: pointer;
+    font-size: 16px;
+    user-select: none;
+  }
+  .options input[type="radio"] {
+    margin-right: 12px;
+    accent-color: #ff5722;
+    cursor: pointer;
+  }
+  button.submit-btn {
+    margin-top: 36px;
+    background: #ff5722;
+    color: #121212;
+    padding: 10px 24px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.35s ease, transform 0.3s ease;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    font-family: 'Poppins', Arial, sans-serif;
+  }
+  button.submit-btn:hover {
+    background: #e64a19;
+    transform: scale(1.07);
+  }
+  #resultForm table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background: #1f1f1f;
+  }
+  #resultForm table, #resultForm th, #resultForm td {
+    border: 1px solid #555;
+    text-align: center;
+    padding: 8px;
+  }
+  #resultForm input {
+    width: 100%;
+    padding: 10px;
+    border-radius: 8px;
+    border: 2px solid #444;
+    background: #1f1f1f;
+    color: #eee;
+  }
+  .result-buttons {
+    margin: 15px 0;
+    display: flex;
+    gap: 10px;
+  }
+  #resultForm .submit-btn {
+    flex: 1;
+    padding: 10px 24px;
+    border-radius: 10px;
+    font-size: 16px;
+  }
+</style>
+</head>
+<body>
+<div class="navbar">
+  <a href="#" id="homeLink">HOME</a>
+  <div style="position: relative;">
+    <span class="login-btn" id="loginBtn">LOGIN &#x25BC;</span>
+    <div class="login-dropdown" id="loginDropdown">
+      <button id="studentLoginBtn">Student Login</button>
+      <button id="adminLoginBtn">Admin Login</button>
+    </div>
+  </div>
+  <a href="#" id="registrationLink">REGISTRATION</a>
+  <a href="#" id="testLink">TEST</a>
+  <a href="#" id="resultLink">RESULT</a>
+</div>
+
+<div id="testForm">
+  <h2>CSE (DS) TEST FORM</h2>
+  <label for="courseCode">Course Code:</label>
+  <input type="text" id="courseCode" placeholder="Enter course code" />
+  <label for="courseName">Course Name:</label>
+  <input type="text" id="courseName" placeholder="Enter course name" />
+  <label for="rollNumber">Roll Number:</label>
+  <input type="text" id="rollNumber" placeholder="Enter roll number" />
+  <label for="year">Year:</label>
+  <select id="year">
+    <option value="" disabled selected>Select Year</option>
+    <option>1st Year</option>
+    <option>2nd Year</option>
+    <option>3rd Year</option>
+    <option>4th Year</option>
+  </select>
+  <label for="semester">Semester:</label>
+  <select id="semester">
+    <option value="" disabled selected>Select Semester</option>
+    <option>1st Sem</option>
+    <option>2nd Sem</option>
+  </select>
+  <label for="registrationNumber">Registration Number:</label>
+  <input type="text" id="registrationNumber" placeholder="Enter registration number" />
+  <div class="question">
+    <p>1. What is Data Science?</p>
+    <div class="options">
+      <label><input type="radio" name="q1" value="a" /> A process of extracting knowledge from data</label>
+      <label><input type="radio" name="q1" value="b" /> Programming language</label>
+      <label><input type="radio" name="q1" value="c" /> Operating system</label>
+      <label><input type="radio" name="q1" value="d" /> None of the above</label>
+    </div>
+  </div>
+  <div class="question">
+    <p>2. Which algorithm is commonly used for classification?</p>
+    <div class="options">
+      <label><input type="radio" name="q2" value="a" /> Linear Regression</label>
+      <label><input type="radio" name="q2" value="b" /> Logistic Regression</label>
+      <label><input type="radio" name="q2" value="c" /> K-Means</label>
+      <label><input type="radio" name="q2" value="d" /> Apriori</label>
+    </div>
+  </div>
+  <div class="question">
+    <p>3. What is overfitting in machine learning?</p>
+    <div class="options">
+      <label><input type="radio" name="q3" value="a" /> Model performs well on training data but poorly on new data</label>
+      <label><input type="radio" name="q3" value="b" /> Model performs poorly on training data</label>
+      <label><input type="radio" name="q3" value="c" /> Model has too few parameters</label>
+      <label><input type="radio" name="q3" value="d" /> None of the above</label>
+    </div>
+  </div>
+  <button class="submit-btn" id="submitTest">Submit</button>
+</div>
+
+<div id="resultForm">
+  <h2>Results</h2>
+  <label for="rollNo">Roll No:</label>
+  <input type="text" id="rollNo" placeholder="Enter roll number" />
+  <div class="result-buttons">
+    <button class="submit-btn">Submit</button>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th>S.NO</th>
+        <th>Course Code</th>
+        <th>Course Name</th>
+        <th>Grade Points</th>
+        <th>Credits</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <div style="margin-top:20px;">
+    <p>SGPA: <span id="sgpaValue"></span></p>
+    <p>CGPA: <span id="cgpaValue"></span></p>
+  </div>
+</div>
+
+<script>
+  const loginBtn = document.getElementById('loginBtn');
+  const loginDropdown = document.getElementById('loginDropdown');
+  const testLink = document.getElementById('testLink');
+  const testForm = document.getElementById('testForm');
+  const resultForm = document.getElementById('resultForm');
+  loginBtn.addEventListener('click', () => {
+    loginDropdown.classList.toggle('show');
+  });
+  window.addEventListener('click', e => {
+    if (!loginBtn.contains(e.target) && !loginDropdown.contains(e.target)) {
+      loginDropdown.classList.remove('show');
+    }
+  });
+  testLink.addEventListener('click', e => {
+    e.preventDefault();
+    testForm.style.display = 'block';
+    resultForm.style.display = 'none';
+    testForm.scrollIntoView({behavior: 'smooth'});
+  });
+  document.getElementById('studentLoginBtn').addEventListener('click', () => {
+    loginDropdown.classList.remove('show');
+    resultForm.style.display = 'block';
+    testForm.style.display = 'none';
+    resultForm.scrollIntoView({behavior: 'smooth'});
+  });
+  document.getElementById('adminLoginBtn').addEventListener('click', () => {
+    alert('Admin Login clicked');
+    loginDropdown.classList.remove('show');
+  });
+  document.getElementById('submitTest').addEventListener('click', () => {
+    alert('Test form submitted! Implement your logic here.');
+  });
+  const navLinks = document.querySelectorAll('.navbar a');
+  navLinks.forEach(link => {
+    link.addEventListener('click', (e) => {
+      e.preventDefault();
+      navLinks.forEach(l => l.classList.remove('active'));
+      link.classList.add('active');
+      if (link.id !== 'testLink') {
+        testForm.style.display = 'none';
+      }
+    });
+  });
+</script>
+</body>
+</html>
