@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Interactive Portal</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto+Slab:wght@500&display=swap" rel="stylesheet" />
+<style>
+    body {
+        font-family: 'Poppins', sans-serif;
+        margin: 0;
+        background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
+        color: #222;
+        transition: background 0.5s ease;
+    }
+    nav {
+        background: linear-gradient(to right, #006064, #004d40);
+        padding: 10px;
+        display: flex;
+        justify-content: center;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+    nav button {
+        background: transparent;
+        border: none;
+        color: white;
+        padding: 12px 20px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        border-radius: 5px;
+    }
+    nav button:hover {
+        background: rgba(255, 255, 255, 0.2);
+        transform: scale(1.05);
+        box-shadow: 0 2px 6px rgba(255,255,255,0.5);
+    }
+    .content {
+        max-width: 900px;
+        margin: 20px auto;
+        padding: 20px;
+        background: rgba(255, 255, 255, 0.97);
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+        animation: fadeIn 0.5s ease;
+        backdrop-filter: blur(6px);
+        min-height: 300px;
+    }
+    .hidden {
+        display: none;
+    }
+    h2 {
+        color: #004d40;
+        margin-bottom: 15px;
+    }
+    form input, form select {
+        width: 100%;
+        padding: 10px;
+        margin: 8px 0;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-family: inherit;
+        transition: 0.3s ease;
+    }
+    form input:focus, form select:focus {
+        outline: none;
+        border-color: #00838f;
+        box-shadow: 0 0 8px rgba(0,131,143,0.5);
+        transform: scale(1.02);
+    }
+    form button {
+        padding: 10px 20px;
+        background: linear-gradient(to right, #00838f, #006064);
+        color: white;
+        border: none;
+        cursor: pointer;
+        margin-top: 8px;
+        font-weight: 600;
+        border-radius: 6px;
+        transition: background 0.3s, transform 0.3s ease;
+    }
+    form button:hover {
+        background: linear-gradient(to right, #006064, #004d40);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    #login button {
+        display: inline-block;
+        font-family: 'Roboto Slab', serif;
+        font-size: 18px;
+        padding: 14px 30px;
+        margin: 12px;
+        border-radius: 10px;
+        background: linear-gradient(to right, #0097a7, #006064);
+        color: white;
+        font-weight: 500;
+        border: none;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    #login button:hover {
+        background: linear-gradient(to right, #006064, #004d40);
+        transform: scale(1.08);
+        box-shadow: 0 6px 16px rgba(0,0,0,0.2);
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 15px;
+        background: #e0f2f1;
+        border-radius: 8px;
+        overflow: hidden;
+    }
+    table, th, td {
+        border: none;
+    }
+    th, td {
+        padding: 12px;
+        text-align: center;
+    }
+    th {
+        background: #004d40;
+        color: white;
+    }
+    tr:nth-child(even) {
+        background: #b2dfdb;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    #home h2 {
+        animation: popIn 1s ease forwards;
+    }
+    @keyframes popIn {
+        0% { transform: scale(0.8); opacity: 0; }
+        100% { transform: scale(1); opacity: 1; }
+    }
+</style>
+</head>
+<body>
+
+<nav>
+    <button onclick="showSection('home')">Home</button>
+    <button onclick="showSection('login')">Login</button>
+    <button onclick="showSection('registration')">Registration</button>
+    <button onclick="showSection('test')">Test</button>
+    <button onclick="showSection('result')">Result</button>
+</nav>
+
+<div class="content">
+    <div id="home">
+        <h2>-><i>welcome to the portal</i><-</h2>
+        <p>Your one-stop solution for tests, results, and more.</p>
+    </div>
+
+    <div id="login" class="hidden">
+        <h2>Login</h2>
+        <button onclick="showSection('studentResult')">Student Login</button>
+        <button onclick="alert('Admin Login Clicked')">Admin Login</button>
+    </div>
+
+    <div id="registration" class="hidden">
+        <h2>Registration Form</h2>
+        <form>
+            <label>Course Code:</label>
+            <input type="text" required>
+            <label>Course Name:</label>
+            <input type="text" required>
+            <label>Roll Number:</label>
+            <input type="text" required>
+            <button type="submit">Register</button>
+        </form>
+    </div>
+
+    <div id="test" class="hidden">
+        <h2>Test Form</h2>
+        <form>
+            <label>Course Code:</label>
+            <input type="text" required>
+            <label>Course Name:</label>
+            <input type="text" required>
+            <label>Roll Number:</label>
+            <input type="text" required>
+            <label>Year:</label>
+            <select required>
+                <option value="">Select Year</option>
+                <option>1st</option>
+                <option>2nd</option>
+                <option>3rd</option>
+                <option>4th</option>
+            </select>
+            <label>Semester:</label>
+            <select required>
+                <option value="">Select Semester</option>
+                <option>1</option>
+                <option>2</option>
+            </select>
+
+            <h3>Questions (CSE-DS)</h3>
+            <p>1. Which data structure uses FIFO?</p>
+            <input type="radio" name="q1"> Stack<br>
+            <input type="radio" name="q1"> Queue<br>
+            <input type="radio" name="q1"> Tree<br>
+
+            <p>2. Which is not a type of Machine Learning?</p>
+            <input type="radio" name="q2"> Supervised<br>
+            <input type="radio" name="q2"> Unsupervised<br>
+            <input type="radio" name="q2"> Compiled<br>
+
+            <p>3. In C, which operator is used for pointer dereferencing?</p>
+            <input type="radio" name="q3"> *<br>
+            <input type="radio" name="q3"> &<br>
+            <input type="radio" name="q3"> -><br>
+
+            <button type="submit">Submit Test</button>
+        </form>
+    </div>
+
+    <div id="result" class="hidden">
+        <h2>Please submit the test for your result</h2>
+    </div>
+
+    <div id="studentResult" class="hidden">
+        <h2>Results</h2>
+        <form id="resultForm">
+            <label>Roll No:</label>
+            <input type="text" id="rollno" name="rollno" required>
+            <br>
+            <button type="submit">Submit</button>
+            <button type="reset">Reset</button>
+        </form>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>S.No</th>
+                    <th>Course Code</th>
+                    <th>Course Name</th>
+                    <th>Grade Points</th>
+                    <th>Credits</th>
+                </tr>
+            </thead>
+            <tbody id="resultTable">
+                <tr>
+                    <td colspan="5">Enter roll number to view results</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <p>SGPA: <span id="sgpa"></span></p>
+        <p>CGPA: <span id="cgpa"></span></p>
+    </div>
+</div>
+
+<script>
+    function showSection(id) {
+        document.querySelectorAll('.content > div').forEach(div => {
+            div.classList.add('hidden');
+        });
+        document.getElementById(id).classList.remove('hidden');
+    }
+
+    const studentData = {
+        "123": {
+            courses: [
+                { code: "CSE101", name: "Data Structures", grade: 9, credits: 4 },
+                { code: "CSE102", name: "Algorithms", grade: 8, credits: 3 },
+                { code: "CSE103", name: "Database Systems", grade: 10, credits: 3 }
+            ],
+            sgpa: 8.9,
+            cgpa: 9.1
+        },
+        "456": {
+            courses: [
+                { code: "CSE201", name: "Operating Systems", grade: 8, credits: 4 },
+                { code: "CSE202", name: "Computer Networks", grade: 7, credits: 3 },
+                { code: "CSE203", name: "Machine Learning", grade: 9, credits: 3 }
+            ],
+            sgpa: 8.0,
+            cgpa: 8.5
+        }
+    };
+
+    document.getElementById("resultForm").addEventListener("submit", function(e) {
+        e.preventDefault();
+        const rollNo = document.getElementById("rollno").value.trim();
+        const tableBody = document.getElementById("resultTable");
+        tableBody.innerHTML = "";
+
+        if(studentData[rollNo]) {
+            studentData[rollNo].courses.forEach((course, index) => {
+                tableBody.innerHTML += `
+                    <tr>
+                        <td>${index + 1}</td>
+                        <td>${course.code}</td>
+                        <td>${course.name}</td>
+                        <td>${course.grade}</td>
+                        <td>${course.credits}</td>
+                    </tr>
+                `;
+            });
+            document.getElementById("sgpa").textContent = studentData[rollNo].sgpa;
+            document.getElementById("cgpa").textContent = studentData[rollNo].cgpa;
+        } else {
+            tableBody.innerHTML = `<tr><td colspan="5">No data found for this roll number</td></tr>`;
+            document.getElementById("sgpa").textContent = "";
+            document.getElementById("cgpa").textContent = "";
+        }
+        showSection('studentResult');
+    });
+</script>
+
+</body>
+</html>
